@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBuddy - All Users (Admin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background:
+      linear-gradient(rgba(10, 10, 15, 0.85), rgba(10, 10, 15, 0.92)),
+      radial-gradient(circle at 50% 0%, #1f2a3a 0%, #0a0a0f 60%);
+    color: #f1f1f1;
+  }
+
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  .brand {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .brand span { color: #ff5c33; }
+
+  .subtitle { color: #b7bac1; font-size: 0.9rem; margin-bottom: 24px; }
+
+  .empty {
+    background: rgba(24, 26, 32, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 30px;
+    text-align: center;
+    color: #b7bac1;
+  }
+
+  .user-card {
+    background: rgba(24, 26, 32, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .user-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .user-head h3 { font-size: 1.05rem; }
+  .user-head h3 span { color: #ff8a3d; }
+
+  .meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: #c6c9cf;
+  }
+  .meta b { color: #f1f1f1; font-weight: 500; }
+
+  .delete-btn {
+    background: rgba(255, 82, 82, 0.15);
+    border: 1px solid rgba(255, 82, 82, 0.4);
+    color: #ff8080;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .delete-btn:hover { background: rgba(255, 82, 82, 0.25); }
+
+  details { margin-top: 10px; }
+  summary {
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: #9aa0ff;
+    margin-bottom: 8px;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 10px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9aa0a8;
+    margin-bottom: 4px;
+  }
+
+  .links { margin-top: 20px; }
+  .links a { color: #9aa0ff; text-decoration: none; font-size: 0.9rem; }
+  .links a:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .user-head { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Fit<span>Buddy</span></div>
+  <p class="subtitle">Admin dashboard &middot; all registered users and their workout plans</p>
+
+  {% if users|length == 0 %}
+    <div class="empty">No users yet. Generate a plan from the home page to see it appear here.</div>
+  {% else %}
+    {% for user in users %}
+    <div class="user-card">
+      <div class="user-head">
+        <h3>{{ user.username }} <span>&middot; {{ user.user_id }}</span></h3>
+        <form action="/delete-user/{{ user.user_id }}" method="post" onsubmit="return confirm('Delete this user and their plan?');">
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </div>
+
+      <div class="meta">
+        <span><b>Age:</b> {{ user.age }}</span>
+        <span><b>Weight:</b> {{ user.weight }} kg</span>
+        <span><b>Goal:</b> {{ user.goal }}</span>
+        <span><b>Intensity:</b> {{ user.intensity }}</span>
+      </div>
+
+      {% if user.workout_plan %}
+      <details open>
+        <summary>Original workout plan</summary>
+        <span class="tag">Original plan</span>
+        <pre>{{ user.workout_plan }}</pre>
+      </details>
+      {% endif %}
+
+      {% if user.updated_plan %}
+      <details open>
+        <summary>Updated workout plan (after feedback)</summary>
+        <span class="tag">Updated plan</span>
+        <pre>{{ user.updated_plan }}</pre>
+      </details>
+      {% endif %}
+
+      {% if user.nutrition_tip %}
+      <details>
+        <summary>Nutrition tip</summary>
+        <pre>{{ user.nutrition_tip }}</pre>
+      </details>
+      {% endif %}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="links"><a href="/">&larr; Back to home</a></div>
+</div>
+</body>
+</html>

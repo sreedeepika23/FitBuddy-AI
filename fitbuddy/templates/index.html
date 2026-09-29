@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBuddy - AI Workout Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      linear-gradient(rgba(10, 10, 15, 0.78), rgba(10, 10, 15, 0.85)),
+      radial-gradient(circle at 20% 20%, #1f2a3a 0%, #0a0a0f 60%);
+    color: #f1f1f1;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(24, 26, 32, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 36px 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .brand h1 {
+    font-size: 1.9rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+
+  .brand span {
+    color: #ff5c33;
+    font-weight: 900;
+  }
+
+  .tagline {
+    color: #b7bac1;
+    font-size: 0.92rem;
+    margin-bottom: 26px;
+  }
+
+  form { display: flex; flex-direction: column; gap: 16px; }
+
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #d8dade;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: #f1f1f1;
+    font-size: 0.98rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .field input:focus,
+  .field select:focus {
+    border-color: #ff5c33;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .row { display: flex; gap: 14px; }
+  .row .field { flex: 1; }
+
+  button {
+    margin-top: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ff5c33, #ff8a3d);
+    color: #101010;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(255, 92, 51, 0.35);
+  }
+
+  .footer-link {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.85rem;
+  }
+
+  .footer-link a {
+    color: #9aa0ff;
+    text-decoration: none;
+  }
+
+  .footer-link a:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .card { padding: 28px 20px; }
+    .row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <h1>Fit<span>Buddy</span></h1>
+    </div>
+    <p class="tagline">Tell us about yourself and we'll build your personalized 7-day AI workout plan.</p>
+
+    <form action="/generate-workout" method="post">
+      <div class="field">
+        <label for="username">Name</label>
+        <input type="text" id="username" name="username" placeholder="e.g. Alex Morgan" required>
+      </div>
+
+      <div class="field">
+        <label for="user_id">User ID</label>
+        <input type="text" id="user_id" name="user_id" placeholder="e.g. alex01" required>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" min="10" max="100" placeholder="28" required>
+        </div>
+        <div class="field">
+          <label for="weight">Weight (kg)</label>
+          <input type="number" id="weight" name="weight" min="1" max="400" step="0.1" placeholder="70" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="goal">Fitness Goal</label>
+        <select id="goal" name="goal" required>
+          <option value="" disabled selected>Select your goal</option>
+          <option value="weight loss">Weight loss</option>
+          <option value="muscle gain">Muscle gain</option>
+          <option value="general wellness">General wellness</option>
+          <option value="flexibility">Flexibility</option>
+          <option value="endurance">Endurance</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="intensity">Workout Intensity</label>
+        <select id="intensity" name="intensity" required>
+          <option value="" disabled selected>Select intensity</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+
+      <button type="submit">Generate Plan</button>
+    </form>
+
+    <span class="footer-link"><a href="/view-all-users">View all users (admin)</a></span>
+  </div>
+</body>
+</html>

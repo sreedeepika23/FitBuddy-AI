@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBuddy - Your Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    background:
+      linear-gradient(rgba(10, 10, 15, 0.82), rgba(10, 10, 15, 0.9)),
+      radial-gradient(circle at 80% 0%, #1f2a3a 0%, #0a0a0f 60%);
+    color: #f1f1f1;
+  }
+
+  .wrap { width: 100%; max-width: 760px; }
+
+  .brand {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 26px;
+  }
+  .brand span { color: #ff5c33; }
+
+  .panel {
+    background: rgba(24, 26, 32, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .panel h2 {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+    color: #ff8a3d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .user-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .user-grid div span { color: #9aa0a8; margin-right: 6px; }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .tip-box {
+    background: rgba(255, 92, 51, 0.1);
+    border: 1px solid rgba(255, 92, 51, 0.3);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.97rem;
+    line-height: 1.5;
+  }
+
+  form.feedback-form { display: flex; flex-direction: column; gap: 14px; }
+
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #d8dade;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: #f1f1f1;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .field input:focus, .field textarea:focus { border-color: #ff5c33; }
+
+  textarea { min-height: 90px; resize: vertical; }
+
+  button {
+    align-self: flex-start;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ff5c33, #ff8a3d);
+    color: #101010;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  button:hover { transform: translateY(-1px); }
+
+  .confirm {
+    background: rgba(76, 217, 100, 0.12);
+    border: 1px solid rgba(76, 217, 100, 0.4);
+    color: #8ff0a4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+  }
+
+  .links { text-align: center; margin-top: 8px; }
+  .links a {
+    color: #9aa0ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin: 0 10px;
+  }
+  .links a:hover { text-decoration: underline; }
+
+  .error-box {
+    background: rgba(255, 82, 82, 0.12);
+    border: 1px solid rgba(255, 82, 82, 0.4);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 560px) {
+    .user-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Fit<span>Buddy</span></div>
+
+  {% if error %}
+    <div class="panel">
+      <div class="error-box">{{ error }}</div>
+      <div class="links"><a href="/">&larr; Back to home</a></div>
+    </div>
+  {% else %}
+
+    <div class="panel">
+      <h2>Your Details</h2>
+      <div class="user-grid">
+        <div><span>Name:</span>{{ username }}</div>
+        <div><span>User ID:</span>{{ user_id }}</div>
+        <div><span>Age:</span>{{ age }}</div>
+        <div><span>Weight:</span>{{ weight }} kg</div>
+        <div><span>Goal:</span>{{ goal }}</div>
+        <div><span>Intensity:</span>{{ intensity }}</div>
+      </div>
+    </div>
+
+    {% if feedback_sent %}
+      <div class="panel">
+        <div class="confirm">&#10003; Your plan was updated based on your feedback.</div>
+        <h2>Updated 7-Day Workout Plan</h2>
+        <pre>{{ updated_plan }}</pre>
+      </div>
+
+      <div class="panel">
+        <h2>Original Plan (for reference)</h2>
+        <pre>{{ workout_plan }}</pre>
+      </div>
+    {% else %}
+      <div class="panel">
+        <h2>Your 7-Day Workout Plan</h2>
+        <pre>{{ workout_plan }}</pre>
+      </div>
+    {% endif %}
+
+    <div class="panel">
+      <h2>Nutrition / Recovery Tip</h2>
+      <div class="tip-box">{{ nutrition_tip }}</div>
+    </div>
+
+    <div class="panel">
+      <h2>Refine Your Plan</h2>
+      <form class="feedback-form" action="/submit-feedback" method="post">
+        <div class="field">
+          <label for="user_id_fb">User ID</label>
+          <input type="text" id="user_id_fb" name="user_id" value="{{ user_id }}" required>
+        </div>
+        <div class="field">
+          <label for="feedback">Feedback</label>
+          <textarea id="feedback" name="feedback" placeholder="e.g. Add more cardio, include more rest days..." required></textarea>
+        </div>
+        <button type="submit">Update Plan</button>
+      </form>
+    </div>
+
+    <div class="links">
+      <a href="/">&larr; Generate another plan</a>
+      <a href="/view-all-users">View all users</a>
+    </div>
+
+  {% endif %}
+</div>
+</body>
+</html>

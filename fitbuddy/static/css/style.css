@@ -1,0 +1,6 @@
+/*
+  FitBuddy templates currently embed their CSS directly in each .html file
+  (as described in the project spec) so this file is intentionally minimal.
+  Drop any shared/global styles here and link it from a template with:
+    <link rel="stylesheet" href="/static/css/style.css">
+*/
